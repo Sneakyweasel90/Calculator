@@ -1,6 +1,7 @@
 package com.example.calculator
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         val buttonClear: Button = findViewById(R.id.button16)
         val buttonEquals: Button = findViewById(R.id.button13)
         val buttonPlus: Button = findViewById(R.id.button10)
+        val buttonMinus: Button = findViewById(R.id.button11)
 
         // Example number click
         button0.setOnClickListener { appendToInput("0") }
@@ -46,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         button9.setOnClickListener { appendToInput("9") }
 
         buttonPlus.setOnClickListener { appendToInput("+") }
+        buttonMinus.setOnClickListener { appendToInput("-") }
         buttonClear.setOnClickListener {
             currentInput = ""
             display.text = "0"
@@ -53,6 +56,10 @@ class MainActivity : AppCompatActivity() {
 
         buttonEquals.setOnClickListener {
             try {
+                if (currentInput.endsWith("+") || currentInput.endsWith("-")) {
+                    display.text = "Error"
+                    return@setOnClickListener
+                }
                 val result = eval(currentInput)
                 display.text = result.toString()
                 currentInput = result.toString()
@@ -69,6 +76,20 @@ class MainActivity : AppCompatActivity() {
 
     // Simple expression evaluator (only handles + for now)
     private fun eval(expression: String): Int {
-        return expression.split("+").map { it.trim().toInt() }.sum()
+        val tokens = Regex("(?<=\\d)(?=[+-])|(?<=[+-])(?=\\d)").split(expression)
+        var result = tokens[0].toInt()
+
+        var i = 1
+        while (i < tokens.size) {
+            val operator = tokens[i]
+            val number = tokens[i + 1].toInt()
+            when (operator) {
+                "+" -> result += number
+                "-" -> result -= number
+            }
+            i += 2
+        }
+
+        return result
     }
 }
