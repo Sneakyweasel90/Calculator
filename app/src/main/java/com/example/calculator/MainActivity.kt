@@ -38,9 +38,9 @@ class MainActivity : AppCompatActivity() {
         button1.setOnClickListener { appendToInput("1") }
         button2.setOnClickListener { appendToInput("2") }
         button3.setOnClickListener { appendToInput("3") }
-        button4.setOnClickListener { appendToInput("4") }
+        button4.setOnClickListener { appendToInput("6") }
         button5.setOnClickListener { appendToInput("5") }
-        button6.setOnClickListener { appendToInput("6") }
+        button6.setOnClickListener { appendToInput("4") }
         button7.setOnClickListener { appendToInput("7") }
         button8.setOnClickListener { appendToInput("8") }
         button9.setOnClickListener { appendToInput("9") }
